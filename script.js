@@ -32,7 +32,8 @@ function Book(author, title, pageAmount, isRead) {
 
 		this.info = function() {
 			if (isRead) {
-				console.log(`${title} by ${author}, ${pageAmount} pages, readed`);
+				console.log(`${title} by ${author}, ${pageAmount} pages,
+				 readed`);
 			} else {
 				console.log(`${title} by ${author}, ${pageAmount} pages,
 				 not read yet`);
@@ -54,12 +55,29 @@ function displayBooks() {
 		row.setAttribute("class", "book-row");
 		row.dataset.indexNumber = i;
 
-		Object.values(currentItem).forEach(val => {
-			val = convertBooleanToText(val);
+		Object.keys(currentItem).forEach(key => {
+			value = currentItem[key];
+			value = convertBooleanToText(value);
 			
-			if (typeof(val) === "string") {
+			if (typeof(value) === "string") { //weeds out object functions
 				const dataCell = document.createElement("td");
-				dataCell.textContent = val;
+				dataCell.textContent = value;
+				
+				const addReadStatusSwitch = function (key, value) {//START HERE
+					if ("isRead" === key) {
+						const readStatusSwitch = document.createElement(
+						"button");
+						if (value === "Not yet") {
+							readStatusSwitch.textContent = "Not read";
+						} else {
+							readStatusSwitch.textContent = "Read";
+						}
+						readStatusSwitch.setAttribute("class",
+						"read-switch-button");
+						dataCell.appendChild(readStatusSwitch);
+					}
+				}
+				addReadStatusSwitch(key, value);
 				row.appendChild(dataCell);
 			}
 		});
@@ -72,19 +90,9 @@ function displayBooks() {
 		table.appendChild(row);
 	}
 	
-	function convertBooleanToText(val) {
-		if (val === true) {
-			return "Yes";
-		} else if (val === false) {
-			return "Not yet";
-		}
-		else {
-			return val;
-		}
-	}
-	
 	addNewBook(); //button
 	removeBook(); //functionality delete button
+
 }
 
 function removeBook() {
@@ -100,6 +108,17 @@ function removeBook() {
 			delete myLibrary[input];
 		});
 	});
+}
+
+function convertBooleanToText(val) {
+	if (val === true) {
+		return "Yes";
+	} else if (val === false) {
+		return "Not yet";
+	}
+	else {
+		return val;
+	}
 }
 
 function addNewBook() {
