@@ -2,3 +2,30 @@ html {
 	background-color: black;
 	color: white;
 }
+
+h1 {
+	font-size: 5em;
+}
+
+.all-books-container caption {
+	margin-top: 1em;
+	font-size: 2em;
+}
+
+.all-books-container table {
+	background-color: #333333;
+	border-style: solid;
+	border-color: #FFFFFF;
+	border-width: 1px;
+}
+
+.all-books-container td {
+	padding: 5px 5px 5px 5px;
+	border-style: solid;
+	border-color: #FFFFFF;
+	border-width: 1px;
+}
+
+.all-books-container button {
+	/*border: none;*/
+}
