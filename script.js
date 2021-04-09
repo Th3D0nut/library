@@ -21,7 +21,7 @@ let myLibrary = [
 	isRead: true,
 }];
 
-addBookToLibrary("book4", "Geralt", "Gwent: Another Approach", "510", true);
+addBookToLibrary("book4", "Geralt", "Gwent Another Approach", "510", true);
 displayBooks();
 
 function Book(author, title, pageAmount, isRead) {
@@ -63,17 +63,24 @@ function displayBooks() {
 				const dataCell = document.createElement("td");
 				dataCell.textContent = value;
 				
-				const addReadStatusSwitch = function (key, value) {//START HERE
+				const addReadStatusSwitch = function (key, value) {
 					if ("isRead" === key) {
 						const readStatusSwitch = document.createElement(
 						"button");
-						if (value === "Not yet") {
+						//Add Id's to datacell of isRead
+						let bookName = currentItem.title.
+						toLowerCase().replaceAll(" ", "-");
+						dataCell.textContent = "";
+						dataCell.setAttribute("id", "status-" + bookName)
+						
+						if (value === "No") {
 							readStatusSwitch.textContent = "Not read";
 						} else {
 							readStatusSwitch.textContent = "Read";
 						}
 						readStatusSwitch.setAttribute("class",
 						"read-switch-button");
+						readStatusSwitch.dataset.indexNumber = i;
 						dataCell.appendChild(readStatusSwitch);
 					}
 				}
@@ -91,8 +98,30 @@ function displayBooks() {
 	}
 	
 	addNewBook(); //button
+	toggleReadStatus(); //functionality Read/Not read button.
 	removeBook(); //functionality delete button
 
+}
+
+function toggleReadStatus() {
+	const buttons = document.querySelectorAll(".read-switch-button");
+	buttons.forEach(button => {
+		button.addEventListener("click", (e) => {
+			let index = e.target.dataset.indexNumber;
+			let obj = myLibrary[index];
+			let bookName = obj.title.toLowerCase().replaceAll(" ", "-");
+			const currentCell = document.querySelector("#status-" + bookName +
+			"> button");
+
+			if (obj.isRead) {
+				obj.isRead = false;
+				currentCell.textContent = "Not Read";
+			} else {
+				obj.isRead = true;
+				currentCell.textContent = "Read";
+			}
+		});
+	});
 }
 
 function removeBook() {
@@ -114,7 +143,7 @@ function convertBooleanToText(val) {
 	if (val === true) {
 		return "Yes";
 	} else if (val === false) {
-		return "Not yet";
+		return "No";
 	}
 	else {
 		return val;
